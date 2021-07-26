@@ -27,16 +27,10 @@ function getSidebar() {
     '',
     'CONTRIBUTING',
     {
-      title: '会员接口',
+      title: '计算机基础',
       children: [
-        'member/query'
+        'basic/system'
       ],
     },
-    {
-      title: '优惠券接口',
-      children: [
-        'coupon/query'
-      ],
-    }
   ];
 };
