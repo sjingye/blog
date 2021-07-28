@@ -32,7 +32,8 @@ jobs:
           # Github 仓库
           GITHUB_REPO: github.com/sjingye/sjingye.github.io
         run: |
-              cd ./public && git init && git add .
+              cd ./public
+              git init
               git config user.name "sjingye"
               git config user.email "sjingye@163.com"
               git add .
