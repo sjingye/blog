@@ -1,10 +1,10 @@
 module.exports = {
-  title: '接口文档',
-  description: '接口文档',
+  title: 'blog',
+  description: '个人博客',
   dest: 'public',
   themeConfig: {
-    repo: 'https://github.com/chenshuaikang/ShareDoc',
-    repoLabel: '源码',
+    repo: '',
+    repoLabel: '',
     lastUpdated: '上次更新',
     sidebar: getSidebar(),
   },
@@ -25,11 +25,28 @@ module.exports = {
 function getSidebar() {
   return [
     '',
-    'CONTRIBUTING',
     {
       title: '计算机基础',
       children: [
         'basic/system'
+      ],
+    },
+    {
+      title: 'JS',
+      children: [
+        'js/promise'
+      ],
+    },
+    {
+      title: 'React',
+      children: [
+        'react/hooks'
+      ],
+    },
+    {
+      title: '工具',
+      children: [
+        'tool/git'
       ],
     },
   ];

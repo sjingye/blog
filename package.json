@@ -1,5 +1,5 @@
 {
-    "name": "interface",
+    "name": "blog",
     "version": "1.0.0",
     "scripts": {
         "start": "./node_modules/.bin/vuepress dev",
@@ -10,7 +10,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git@github.com:chenshuaikang/ShareDoc.git"
+        "url": "https://github.com/sjingye/blog.git"
     },
     "dependencies": {
         "markdown-it-footnote": "3.0.1",

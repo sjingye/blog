@@ -1,0 +1,40 @@
+on: push
+name: 🚀 Blog CI/CD
+jobs:
+  Deploy-Action:
+    name: build & deploy # 此任务（job）的名字
+    runs-on: ubuntu-latest # 运行环境
+    steps:
+      - name: Checkout codes # 此步骤（step）的名字
+        uses: actions/checkout@master # 切换分支到master
+        
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+
+      - name: Cache node modules
+      # 设置包缓存目录，避免每次下载
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Build Project 
+        run: |
+          npm install -g vuepress
+          npm install
+          npm build
+
+      - name: Deploy blog
+      env: 
+        # Github 仓库
+        GITHUB_REPO: github.com/sjingye/sjingye.github.io
+      run: |
+            cd ./public && git init && git add .
+            git config user.name "sjingye"
+            git config user.email "sjingye@163.com"
+            git add .
+            git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
+            git push --force --quiet "https://${{ secrets.PUBLIC_MAC }}@$GITHUB_REPO" master:master

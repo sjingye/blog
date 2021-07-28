@@ -1,4 +1,4 @@
-# 操作系统 <Badge text="beta" type="warn"/> <Badge text="0.1.1+"/>
+# 操作系统 
 
 ## Linux常用命令
 
