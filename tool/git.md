@@ -93,6 +93,8 @@ git push
 建立本地分支和远程分支的关联
 `git branch --set-upstream <branch> origin/<branch>`
 
+## 对比
+`git diffent`
 ## 常用命令
 
 ### git stash
@@ -123,3 +125,4 @@ stash 列表
 
 [说说 Git reset 与 revert 的故事](https://zhuanlan.zhihu.com/p/32412959)
 [Git恢复版本reset、revert](https://mp.weixin.qq.com/s?src=11&timestamp=1627376793&ver=3216&signature=ZuuFdStq4Wy0SK*ite4gqayr3mk6qeTadanKDyzdh2zEJZTjzBclXHjOEMtKrJtEt9DwtNOvBkQNiL6pM9*kFf-zv1flHxkwMN*0owKFnvHuWfVUodJywB319knJYeaZ&new=1)
+[Git 教程](https://cloud.tencent.com/developer/chapter/12769)

@@ -40,6 +40,7 @@ function getSidebar() {
     {
       title: 'React',
       children: [
+        'react/home',
         'react/hooks'
       ],
     },
@@ -47,6 +48,12 @@ function getSidebar() {
       title: '工具',
       children: [
         'tool/git'
+      ],
+    },
+    {
+      title: '项目中的问题',
+      children: [
+        'work/home'
       ],
     },
   ];

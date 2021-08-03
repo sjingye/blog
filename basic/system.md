@@ -68,7 +68,7 @@ mkdir -p test1/test2/test3   递归创建
 
 `功能描述：创建空文件 或 修改文件时间`
 
-touch test.py 创建空文件，如果文件存在，则修改文件创建时间
+`touch test.py`创建空文件，如果文件存在，则修改文件创建时间
 
 ### rm
 命令名称：rm

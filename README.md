@@ -6,7 +6,8 @@
 * JS
    * [promise](js/promise.md)
 * React
-   * [promise](react/hooks.md)
+   * [介绍](react/index.md)
+   * [Hooks](react/hooks.md)
 * 工具
    * [Git](tool/git.md)
 
