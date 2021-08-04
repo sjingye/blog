@@ -2,7 +2,7 @@
 
 ## [函数式组件与类组件有何不同？](https://overreacted.io/zh-hans/how-are-function-components-different-from-classes/)
 
-函数式组件捕获了渲染所使用的值。
+函数式组件捕获了渲染所使用的值，而类组件总是会通过 this 拿到最新的 props/state。
 
 但是如果我们想要读取并不属于这一次特定渲染的，最新的 props 和 state 呢？如果我们想要“从未来读取他们”呢？
 
