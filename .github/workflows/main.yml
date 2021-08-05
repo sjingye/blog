@@ -32,6 +32,7 @@ jobs:
           # Github 仓库
           GITHUB_REPO: github.com/sjingye/sjingye.github.io
         run: |
+              git config --global init.defaultBranch main
               cd ./public
               git init
               git config user.name "sjingye"

@@ -183,5 +183,6 @@ useMemo 会记住一些值，同时在后续 render 时，将依赖数组中的�
 
 [官方文档](https://zh-hans.reactjs.org/docs/hooks-intro.html)
 [Hooks FAQ](https://zh-hans.reactjs.org/docs/hooks-faq.html)
-[JS 核心理论之《React 状态复用与 Hooks 用法](https://zhuanlan.zhihu.com/p/163493445)
 [React.memo() 和 useMemo() 的用法与区别](https://mp.weixin.qq.com/s?src=11&timestamp=1628157434&ver=3234&signature=fyA5coriHS5bLBjX0kTdMD9nyJT*-RVmxos64SAxn-s1auTo-j0Vr2w9a8F6WoWjJSg11qel0f0AxYXJ2jyN2cCv5ZKpxttwSYkq4rNiST*Xj5zM-pRaqBmRlnxL0BgQ&new=1)
+[JS 核心理论之《React 状态复用与 Hooks 用法》](https://zhuanlan.zhihu.com/p/163493445)
+
