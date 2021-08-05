@@ -26,34 +26,66 @@ function getSidebar() {
   return [
     '',
     {
-      title: '计算机基础',
+      title: 'CSS',
       children: [
-        'basic/system'
+        '../src/css/home'
       ],
     },
     {
       title: 'JS',
       children: [
-        'js/promise'
+        '../src/js/promise'
+      ],
+    },
+    {
+      title: '框架通识',
+      children: [
+        '../src/framework/home',
       ],
     },
     {
       title: 'React',
       children: [
-        'react/home',
-        'react/hooks'
+        '../src/react/home',
+        '../src/react/hooks'
+      ],
+    },
+    {
+      title: 'Vue',
+      children: [
+        '../src/vue/home',
+      ],
+    },
+    {
+      title: 'TS',
+      children: [
+        '../src/ts/common',
+        '../src/ts/InReact'
       ],
     },
     {
       title: '工具',
       children: [
-        'tool/git'
+        '../src/tool/git',
+        '../src/tool/npm',
+      ],
+    },
+    {
+      title: '算法和数据结构',
+      children: [
+        '../src/algorithm/home'
+      ],
+    },
+    {
+      title: '计算机基础',
+      children: [
+        '../src/basic/system.md'
       ],
     },
     {
       title: '项目中的问题',
       children: [
-        'work/home'
+        '../src/work/home'
       ],
     },
   ];
