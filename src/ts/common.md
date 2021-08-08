@@ -1,5 +1,7 @@
 # TypeScript 常见用法
 
+契约高于实现
+
 ## void
 
 在 TS 中，void 和 undefined 功能高度类似，可以在逻辑上避免不小心使用了空指针导致的错误。
@@ -67,9 +69,52 @@ let b = a !== null && a !== void 0 ? a : 10;
 
 ## 泛型工具
 
-[泛型工具](https://juejin.cn/post/6926794697553739784#heading-19)
+### 其他常用工具类型
+
+由 set 生成 map
+
+```typescript
+type Record<K extends keyof any, T> = { [P in K]: T };
+
+type Size = "small" | "default" | "big";
+/*
+{
+    small: number
+    default: number
+    big: number
+}
+ */
+type SizeMap = Record<Size, number>;
+```
+
+保留 map 的一部分
+
+```typescript
+type Pick<T, K extends keyof T> = { [P in K]: T[P] };
+/*
+{
+    default: number
+    big: number
+}
+ */
+type BiggerSizeMap = Pick<SizeMap, "default" | "big">;
+```
+
+删除 map 的一部分
+
+```typescript
+type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
+/*
+{
+    default: number
+}
+ */
+type DefaultSizeMap = Omit<BiggerSizeMap, "big">;
+```
+
+### [泛型工具](https://juejin.cn/post/6926794697553739784#heading-19)
 
 ## 学习资料
 
 [TypeScript 高级用法](https://juejin.cn/post/6926794697553739784)
-[TypeScript中高级应用与最佳实践](https://juejin.cn/post/6844903904140853255)
+[TypeScript 中高级应用与最佳实践](https://juejin.cn/post/6844903904140853255)
