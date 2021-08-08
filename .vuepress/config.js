@@ -68,6 +68,7 @@ function getSidebar() {
       children: [
         '../src/tool/git',
         '../src/tool/npm',
+        '../src/tool/vscode',
       ],
     },
     {
