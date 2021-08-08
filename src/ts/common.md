@@ -72,3 +72,4 @@ let b = a !== null && a !== void 0 ? a : 10;
 ## 学习资料
 
 [TypeScript 高级用法](https://juejin.cn/post/6926794697553739784)
+[TypeScript中高级应用与最佳实践](https://juejin.cn/post/6844903904140853255)
