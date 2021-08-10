@@ -1,11 +1,11 @@
 module.exports = {
-  title: 'blog',
-  description: '个人博客',
-  dest: 'public',
+  title: "blog",
+  description: "个人博客",
+  dest: "public",
   themeConfig: {
-    repo: '',
-    repoLabel: '',
-    lastUpdated: '上次更新',
+    repo: "",
+    repoLabel: "",
+    lastUpdated: "上次更新",
     sidebar: getSidebar(),
   },
   markdown: {
@@ -15,8 +15,8 @@ module.exports = {
         breaks: true,
         linkify: true,
       });
-      md.use(require('markdown-it-mermaid').default);
-      md.use(require('markdown-it-footnote'));
+      md.use(require("markdown-it-mermaid").default);
+      md.use(require("markdown-it-footnote"));
     },
   },
   evergreen: true,
@@ -24,70 +24,46 @@ module.exports = {
 
 function getSidebar() {
   return [
-    '',
+    "",
     {
-      title: 'CSS',
-      children: [
-        '../src/css/home'
-      ],
+      title: "CSS",
+      children: ["../src/css/home"],
     },
     {
-      title: 'JS',
-      children: [
-        '../src/js/promise'
-      ],
+      title: "JS",
+      children: ["../src/js/promise"],
     },
     {
-      title: '框架通识',
-      children: [
-        '../src/framework/home',
-      ],
+      title: "框架通识",
+      children: ["../src/framework/home"],
     },
     {
-      title: 'React',
-      children: [
-        '../src/react/home',
-        '../src/react/hooks'
-      ],
+      title: "React",
+      children: ["../src/react/home", "../src/react/hooks"],
     },
     {
-      title: 'Vue',
-      children: [
-        '../src/vue/home',
-      ],
+      title: "Vue",
+      children: ["../src/vue/home"],
     },
     {
-      title: 'TS',
-      children: [
-        '../src/ts/common',
-        '../src/ts/InReact'
-      ],
+      title: "TS",
+      children: ["../src/ts/common", "../src/ts/type", "../src/ts/InReact"],
     },
     {
-      title: '工具',
-      children: [
-        '../src/tool/git',
-        '../src/tool/npm',
-        '../src/tool/vscode',
-      ],
+      title: "工具",
+      children: ["../src/tool/git", "../src/tool/npm", "../src/tool/vscode"],
     },
     {
-      title: '算法和数据结构',
-      children: [
-        '../src/algorithm/home'
-      ],
+      title: "算法和数据结构",
+      children: ["../src/algorithm/home"],
     },
     {
-      title: '计算机基础',
-      children: [
-        '../src/basic/system.md'
-      ],
+      title: "计算机基础",
+      children: ["../src/basic/system.md"],
     },
     {
-      title: '项目中的问题',
-      children: [
-        '../src/work/home'
-      ],
+      title: "项目中的问题",
+      children: ["../src/work/home"],
     },
   ];
-};
+}
