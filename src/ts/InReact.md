@@ -1,4 +1,4 @@
-# TypeScript with React
+# TS + React
 
 ## 学习资料
 

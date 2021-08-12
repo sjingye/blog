@@ -46,7 +46,7 @@ function getSidebar() {
       children: ["../src/vue/home"],
     },
     {
-      title: "TS",
+      title: "TypeScript",
       children: ["../src/ts/common", "../src/ts/type", "../src/ts/InReact"],
     },
     {
@@ -54,8 +54,8 @@ function getSidebar() {
       children: ["../src/tool/git", "../src/tool/npm", "../src/tool/vscode"],
     },
     {
-      title: "算法和数据结构",
-      children: ["../src/algorithm/home"],
+      title: "数据结构和算法",
+      children: ["../src/algorithm/home", "../src/algorithm/book1"],
     },
     {
       title: "计算机基础",

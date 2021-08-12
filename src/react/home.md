@@ -51,11 +51,12 @@ Mixin（混入）是一种通过扩展收集功能的方式。
 它本质上是将一个对象的属性拷贝到另一个对象上面去，不过你可以拷贝任意多个对象的任意个方法到一个新对象上去，这是继承所不能实现的。它的出现主要就是为了解决代码复用问题。
 
 高阶组件
-React对装饰模式的一种实现，高阶组件就是一个函数，且该函数接受一个组件作为参数，并返回一个新的组件。是没有副作用的纯函数。
-[JS核心理论之《React状态复用与Hooks用法》](https://zhuanlan.zhihu.com/p/163493445)
+React 对装饰模式的一种实现，高阶组件就是一个函数，且该函数接受一个组件作为参数，并返回一个新的组件。是没有副作用的纯函数。
+[JS 核心理论之《React 状态复用与 Hooks 用法》](https://zhuanlan.zhihu.com/p/163493445)
 
 ## 参考资料
 
+[函数式组件与类组件有何不同？](https://overreacted.io/zh-hans/how-are-function-components-different-from-classes/)
 [实现说明](https://zh-hans.reactjs.org/docs/implementation-notes.html)
 [设计理念](https://zh-hans.reactjs.org/docs/design-principles.html)
 [FAQ](https://zh-hans.reactjs.org/docs/faq-ajax.html)
