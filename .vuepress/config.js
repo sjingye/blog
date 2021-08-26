@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-07-27 10:48:37
+ * @LastEditTime: 2021-08-26 20:35:12
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /blog/.vuepress/config.js
+ */
 module.exports = {
   title: "blog",
   description: "个人博客",
@@ -51,7 +59,7 @@ function getSidebar() {
     },
     {
       title: "工具",
-      children: ["../src/tool/git", "../src/tool/npm", "../src/tool/vscode"],
+      children: ["../src/tool/git", "../src/tool/npm", "../src/tool/vscode", "../src/tool/rules"],
     },
     {
       title: "数据结构和算法",
