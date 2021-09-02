@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-27 10:48:37
- * @LastEditTime: 2021-08-26 20:35:12
- * @LastEditors: your name
+ * @LastEditTime: 2021-08-30 21:03:10
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /blog/.vuepress/config.js
  */
@@ -71,7 +71,7 @@ function getSidebar() {
     },
     {
       title: "项目中的问题",
-      children: ["../src/work/home"],
+      children: ["../src/work/home", "../src/work/improve"],
     },
   ];
 }
