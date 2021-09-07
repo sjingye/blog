@@ -11,11 +11,115 @@
 > Lighthouse 是一种开源的自动化工具，用于提高网页质量。你可以在任何网页上运行它。它能够针对性能、可访问性、渐进式 Web 应用等进行审核。
 > 你可以在 Chrome DevTools 中从命令行运行 Lighthouse。当你向 Lighthouse 提供了一个 URL 来进行审核时，它会针对该页面运行一系列审核，然后生成一个关于该页面执行情况的报告。这份报告可以作为如何改进页面的指标。每次审核都会产生一份参考文档，解释了这些审核为什么重要，以及如何解决等内容。
 
-目前测试项包括页面性能、PWA、可访问性（无障碍）、最佳实践、SEO
+目前测试项包括页面性能、PWA、可访问性（无障碍）、最佳实践、SEO。
+Lighthouse 会对各个测试项的结果打分，并给出优化建议，这些打分标准和优化建议可以视为 Google 的网页最佳实践。
 
-以群侧边栏首页为例，通过 Lighthouse 对页面进行性能评分
+**一、以本地环境群侧边栏首页为例，通过 Lighthouse 对页面进行性能评分**
 
-![image](../img/6.jpg)
+![image](../img/6.png)
+
+**二、优化建议如下**
+
+![image](../img/7.png)
+
+**三、实践**
+
+1.Reduce unused JavaScript
+Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity.
+
+> Build tool for support for removing unused code
+> Check out the following Tooling.Report tests to find out if your bundler supports features that make it easier to avoid or remove unused code:
+
+**Code Splitting**
+代码分割是由诸如 Webpack，Rollup 和 Browserify（factor-bundle）这类打包器支持的一项技术，能够创建多个包并在运行时动态加载。
+可以避免加载用户永远不需要的代码，并在初始加载的时候减少所需加载的代码量。
+
+常见做法：
+
+- 入口起点：使用 entry 配置手动地分离代码。比如分离业务代码和第三方库（ vendor ）
+- 防止重复：使用 Entry dependencies 或者 SplitChunksPlugin 去重和分离 chunk。
+- 动态导入：通过模块的内联函数调用来分离代码。比如按需加载（利用 import() 语法）
+
+**Unused Code Elimination**
+
+index.js
+
+```javascript
+import { logCaps } from "./utils.js";
+logCaps(exclaim("This is index"));
+
+function thisIsNeverCalled() {
+  console.log(`No, really, it isn't`);
+}
+```
+
+utils.js
+
+```javascript
+export function logCaps(msg) {
+  console.log(msg.toUpperCase());
+}
+
+export function thisIsNeverCalledEither(msg) {
+  return msg + "!";
+}
+```
+
+Once built for production, both the thisIsNeverCalled and thisIsNeverCalledEither functions should be completely removed from the bundle(s).
+
+以 webpack 为例：
+Webpack's Dead Code Elimination is implemented by annotating and removing unused module exports, then relying on [Terser] to perform Dead Code Elimination. As with minification, the preservation of some module boundaries in Webpack bundles can limit the amount of optimization Terser can perform.
+
+**Unused Imported Code**
+index.js
+
+```javascript
+(async function() {
+  const { logCaps } = await import("./utils.js");
+  logCaps("This is index");
+})();
+```
+
+utils.js
+
+```javascript
+export function logCaps(msg) {
+  console.log(msg.toUpperCase());
+}
+
+export function thisIsNeverCalled(msg) {
+  return msg + "!";
+}
+```
+
+Once built for production, the thisIsNeverCalled function from utils.js should not be present in the resulting bundle(s).
+
+以 webpack 为例：
+Webpack doesn't understand the special destructuring syntax to elimitate dead code:
+
+```javascript
+(async function() {
+  const { logCaps } = await import("./utils.js");
+})();
+```
+
+But it allows to manually list the exports that are used via magic comment:
+
+```javascript
+const { logCaps } = await import(/* webpackExports: "logCaps" */ "./utils.js");
+```
+
+针对 React 项目，可以
+React
+If you are not server-side rendering, split your JavaScript bundles with React.lazy(). Otherwise, code-split using a third-party library such as loadable-components.
+
+参考资料：
+
+[Remove unused JavaScript](https://web.dev/unused-javascript/)
+
+**四、按照建议优化后性能评分**
+
+![image](../img/6.png)
 
 ### Performance
 

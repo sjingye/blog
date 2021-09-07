@@ -1,11 +1,4 @@
-/*
- * @Author: your name
- * @Date: 2021-07-27 10:48:37
- * @LastEditTime: 2021-08-30 21:03:10
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /blog/.vuepress/config.js
- */
+
 module.exports = {
   title: "blog",
   description: "个人博客",
