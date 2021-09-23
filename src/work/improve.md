@@ -24,11 +24,40 @@ Lighthouse 会对各个测试项的结果打分，并给出优化建议，这些
 
 **三、实践**
 
-1.Reduce unused JavaScript
-Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity.
+> Opportunities - These suggestions can help your page load faster. They don't directly affect the Performance score.
 
-> Build tool for support for removing unused code
-> Check out the following Tooling.Report tests to find out if your bundler supports features that make it easier to avoid or remove unused code:
+1. Reduce unused JavaScript
+   Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity.
+
+- 针对 React 项目，可以
+
+> If you are not server-side rendering, split your JavaScript bundles with React.lazy(). Otherwise, code-split using a third-party library such as loadable-components.
+
+Here’s an example of how to setup route-based code splitting into your app using libraries like React Router with React.lazy.
+
+```javascript
+import React, { Suspense, lazy } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+const Home = lazy(() => import("./routes/Home"));
+const About = lazy(() => import("./routes/About"));
+
+const App = () => (
+  <Router>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/about" component={About} />
+      </Switch>
+    </Suspense>
+  </Router>
+);
+```
+
+Referencing the [React Docs on code splitting](https://reactjs.org/docs/code-splitting.html#route-based-code-splitting), the recommendation is to use Suspense with a defined fallback so you have something to render in place of the components when they haven't loaded.
+
+- Build tool for support for removing unused code
+  > Check out the following Tooling.Report tests to find out if your bundler supports features that make it easier to avoid or remove unused code:
 
 **Code Splitting**
 代码分割是由诸如 Webpack，Rollup 和 Browserify（factor-bundle）这类打包器支持的一项技术，能够创建多个包并在运行时动态加载。
@@ -36,86 +65,126 @@ Reduce unused JavaScript and defer loading scripts until they are required to de
 
 常见做法：
 
-- 入口起点：使用 entry 配置手动地分离代码。比如分离业务代码和第三方库（ vendor ）
+- 入口起点：在 entry 里配置多个入口，使用 entry 配置手动地分离代码。比如分离业务代码和第三方库（ vendor ）。
+
+```javascript
+module.exports = {
+  entry: {
+    app1: path.resolve(__dirname, "src/index.js1"),
+    app2: path.resolve(__dirname, "src/index.js2"),
+  },
+};
+```
+
+Q: app.js 的问题：——部分的修改意味着重新下载所有的文件
+
+所以为什么不把每一个 npm 包都分割为单独的文件呢？做起来非常简单，利用 splitChunks
+让我们把我们的 react，lodash 等分离为不同的文件
+
+- 利用 webpack 的 splitChunks ，配置分离规则
+
+```javascript
+module.exports = {
+  entry: {
+    app: path.resolve(__dirname, "src/index.js"),
+  },
+
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].[contenthash].js",
+  },
+  optimization: {
+    splitChunks: {
+      // 表示选择哪些 chunks 进行分割，可选值有：async，initial和all
+      chunks: "all",
+      // 表示加载入口文件时，并行请求的最大数目。默认为3。
+      maxInitialRequests: 3,
+      // 表示新分离出的chunk必须大于等于minSize，默认为30000，约30kb。
+      minSize: 30000,
+      /*
+      cacheGroups是我们用来制定规则告诉 Webpack 应该如何组织 chunks 到打包输出文件的地方。
+      cacheGroups 下可以配置多个组，每个组根据test设置条件，符合test条件的模块，就分配到该组。
+      模块可以被多个组引用，但最终会根据priority来决定打包到哪个组中。
+
+      通常情况下，只需要为输出文件的 name定义一个字符串。但是把name定义为一个函数（当文件被解析时会被调用）。在函数中会根据 module 的路径返回包的名称。结果就是，对于每一个包都会得到一个单独的文件，比如npm.react-dom.899sadfhj4.js
+
+    */
+      cacheGroups: {
+        atm: {
+          test: "/antd-mobile/",
+          priority: 1,
+        },
+        milo: {
+          test: /milo-ui/,
+          priority: 1,
+        },
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            const packageName = module.context.match(
+              /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+            )[1];
+
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `npm.${packageName.replace("@", "")}`;
+          },
+          reuseExistingChunk: true,
+        },
+        // 将两个以上的chunk所共享的模块打包至default组
+        default: {
+          minChunks: 2,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
+};
+```
+
+修改前打包后的 js 文件目录：
+
+![image](../img/9.png)
+
+修改后打包后的 js 文件目录：
+
+![image](../img/8.png)
+
 - 防止重复：使用 Entry dependencies 或者 SplitChunksPlugin 去重和分离 chunk。
 - 动态导入：通过模块的内联函数调用来分离代码。比如按需加载（利用 import() 语法）
 
-**Unused Code Elimination**
+**Unused Code Elimination / Unused Imported Code**
 
-index.js
+- 利用 webpack 的 [Tree Shaking](https://webpack.js.org/guides/tree-shaking) ，去除 unused code
 
-```javascript
-import { logCaps } from "./utils.js";
-logCaps(exclaim("This is index"));
+> the new webpack 4 release expands on this capability with a way to provide hints to the compiler via the "sideEffects" package.json
 
-function thisIsNeverCalled() {
-  console.log(`No, really, it isn't`);
+```json
+{
+  "name": "ml-wxwork-assistant",
+  "sideEffects": false
 }
 ```
 
-utils.js
+修改后打包后的 js 文件目录：
 
-```javascript
-export function logCaps(msg) {
-  console.log(msg.toUpperCase());
-}
+![image](../img/10.png)
 
-export function thisIsNeverCalledEither(msg) {
-  return msg + "!";
-}
-```
-
-Once built for production, both the thisIsNeverCalled and thisIsNeverCalledEither functions should be completely removed from the bundle(s).
-
-以 webpack 为例：
-Webpack's Dead Code Elimination is implemented by annotating and removing unused module exports, then relying on [Terser] to perform Dead Code Elimination. As with minification, the preservation of some module boundaries in Webpack bundles can limit the amount of optimization Terser can perform.
-
-**Unused Imported Code**
-index.js
-
-```javascript
-(async function() {
-  const { logCaps } = await import("./utils.js");
-  logCaps("This is index");
-})();
-```
-
-utils.js
-
-```javascript
-export function logCaps(msg) {
-  console.log(msg.toUpperCase());
-}
-
-export function thisIsNeverCalled(msg) {
-  return msg + "!";
-}
-```
-
-Once built for production, the thisIsNeverCalled function from utils.js should not be present in the resulting bundle(s).
-
-以 webpack 为例：
-Webpack doesn't understand the special destructuring syntax to elimitate dead code:
-
-```javascript
-(async function() {
-  const { logCaps } = await import("./utils.js");
-})();
-```
-
-But it allows to manually list the exports that are used via magic comment:
-
-```javascript
-const { logCaps } = await import(/* webpackExports: "logCaps" */ "./utils.js");
-```
-
-针对 React 项目，可以
-React
-If you are not server-side rendering, split your JavaScript bundles with React.lazy(). Otherwise, code-split using a third-party library such as loadable-components.
+对比发现有些文件大小小了一些
 
 参考资料：
 
 [Remove unused JavaScript](https://web.dev/unused-javascript/)
+
+2. Minify JavaScript
+3. Eliminate render-blocking resources
+
+> Diagnostics(诊断) - More information about the performance of your application. These numbers don't directly affect the Performance score.
+
+1. Serve static assets with an efficient cache policy
+2. Avoid enormous network payloads
+3. Avoid an excessive DOM size
 
 **四、按照建议优化后性能评分**
 

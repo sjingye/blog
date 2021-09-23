@@ -43,8 +43,10 @@ git reset --hard [commit_id]
 */
 git push -f
 ```
+
 回退到上一个版本:
 `git reset --hard HEAD^`
+
 ### 二、revert：
 
 **原理**： git revert 用于“反做”某一个版本，以达到撤销该版本的修改的目的。比如，我们 commit 了三个版本（版本一、版本二、 版本三），突然发现版本二不行（如：有 bug），想要撤销版本二，但又不想影响撤销版本三的提交，就可以用 git revert 命令来反做版本二，生成新的版本四，这个版本四里会保留版本三的东西，但撤销了版本二的东西。
@@ -94,7 +96,9 @@ git push
 `git branch --set-upstream <branch> origin/<branch>`
 
 ## 对比
+
 `git diffent`
+
 ## 常用命令
 
 ### git stash
@@ -121,8 +125,14 @@ stash 列表
 记录每一次命令,可以回到未来
 `git reflog`
 
+工作中遇到的问题：
+
+1. git 怎么查看分支从哪个分支拉出来的？
+   A: git 各分支之间没有父子关系，只有基于 commit 的引用，即分支只是基于 commit 的引用。
+   利用 `git reflog --date=local | grep <branchname>` 可以查看分支间的关系
+
 ## 参考资料
 
 [说说 Git reset 与 revert 的故事](https://zhuanlan.zhihu.com/p/32412959)
-[Git恢复版本reset、revert](https://mp.weixin.qq.com/s?src=11&timestamp=1627376793&ver=3216&signature=ZuuFdStq4Wy0SK*ite4gqayr3mk6qeTadanKDyzdh2zEJZTjzBclXHjOEMtKrJtEt9DwtNOvBkQNiL6pM9*kFf-zv1flHxkwMN*0owKFnvHuWfVUodJywB319knJYeaZ&new=1)
+[Git 恢复版本 reset、revert](https://mp.weixin.qq.com/s?src=11&timestamp=1627376793&ver=3216&signature=ZuuFdStq4Wy0SK*ite4gqayr3mk6qeTadanKDyzdh2zEJZTjzBclXHjOEMtKrJtEt9DwtNOvBkQNiL6pM9*kFf-zv1flHxkwMN*0owKFnvHuWfVUodJywB319knJYeaZ&new=1)
 [Git 教程](https://cloud.tencent.com/developer/chapter/12769)
