@@ -94,6 +94,8 @@ git push
 
 建立本地分支和远程分支的关联
 `git branch --set-upstream <branch> origin/<branch>`
+删除远程分支
+`git push origin --delete <branchName>`
 
 ## 对比
 

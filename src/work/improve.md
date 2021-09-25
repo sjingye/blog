@@ -2,9 +2,7 @@
 
 性能优化是前端开发一个非常重要的组成部分，如何更好地进行网络传输，如何优化浏览器渲染过程，来定位项目中存在的问题。Chrome DevTools 给我们提供了 2 种常用方式 Lighthouse 和 Performance。Lighthouse 可以对页面进行性能评分，同时，还会给我们提供一些优化建议。而 Performance 提供了非常多的运行时数据，能让我们看到更多细节数据。
 
-## 性能分析
-
-### Lighthouse
+## Lighthouse
 
 根据 Google Developers Docs 上的描述
 
@@ -14,26 +12,26 @@
 目前测试项包括页面性能、PWA、可访问性（无障碍）、最佳实践、SEO。
 Lighthouse 会对各个测试项的结果打分，并给出优化建议，这些打分标准和优化建议可以视为 Google 的网页最佳实践。
 
-**一、以本地环境群侧边栏首页为例，通过 Lighthouse 对页面进行性能评分**
+### 1.以本地环境群侧边栏首页为例，通过 Lighthouse 对页面进行性能评分
 
 ![image](../img/6.png)
 
-**二、优化建议如下**
+### 2.优化建议如下
 
 ![image](../img/7.png)
 
-**三、实践**
+### 3.实践
 
 > Opportunities - These suggestions can help your page load faster. They don't directly affect the Performance score.
 
-1. Reduce unused JavaScript
-   Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity.
+#### 1. Reduce unused JavaScript
 
-- 针对 React 项目，可以
+Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity.
 
-> If you are not server-side rendering, split your JavaScript bundles with React.lazy(). Otherwise, code-split using a third-party library such as loadable-components.
+**1).React 项目，用 React.lazy() 结合 Suspense**
 
-Here’s an example of how to setup route-based code splitting into your app using libraries like React Router with React.lazy.
+> not server-side rendering： React.lazy() + Suspense with a defined fallback
+> Otherwise, code-split using a third-party library such as loadable-components.
 
 ```javascript
 import React, { Suspense, lazy } from "react";
@@ -54,34 +52,34 @@ const App = () => (
 );
 ```
 
-Referencing the [React Docs on code splitting](https://reactjs.org/docs/code-splitting.html#route-based-code-splitting), the recommendation is to use Suspense with a defined fallback so you have something to render in place of the components when they haven't loaded.
+参考资料：
+[React Docs on code splitting](https://reactjs.org/docs/code-splitting.html#route-based-code-splitting)
 
-- Build tool for support for removing unused code
-  > Check out the following Tooling.Report tests to find out if your bundler supports features that make it easier to avoid or remove unused code:
+**2).Build tool for support for Code Splitting**
 
-**Code Splitting**
 代码分割是由诸如 Webpack，Rollup 和 Browserify（factor-bundle）这类打包器支持的一项技术，能够创建多个包并在运行时动态加载。
 可以避免加载用户永远不需要的代码，并在初始加载的时候减少所需加载的代码量。
 
-常见做法：
+webpack 常见做法：
 
-- 入口起点：在 entry 里配置多个入口，使用 entry 配置手动地分离代码。比如分离业务代码和第三方库（ vendor ）。
+- **入口起点：在 entry 里配置多个入口，使用 entry 配置手动地分离代码。比如分离业务代码和第三方库（ vendor ）**
 
 ```javascript
 module.exports = {
   entry: {
-    app1: path.resolve(__dirname, "src/index.js1"),
-    app2: path.resolve(__dirname, "src/index.js2"),
+    app: path.resolve(__dirname, "src/index.js"),
+    vendor: path.resolve(__dirname, "src/vendor.js"),
   },
 };
 ```
 
-Q: app.js 的问题：——部分的修改意味着重新下载所有的文件
+- **防止重复：使用 Entry dependencies 或者 SplitChunksPlugin 去重和分离 chunk**
+  app.js 的问题：——部分的修改意味着重新下载所有的文件
 
-所以为什么不把每一个 npm 包都分割为单独的文件呢？做起来非常简单，利用 splitChunks
-让我们把我们的 react，lodash 等分离为不同的文件
+所以为什么不把每一个 npm 包都分割为单独的文件呢？
+做起来非常简单，利用 Webpack 的 splitChunks，让我们把我们的 react，lodash 等分离为不同的文件
 
-- 利用 webpack 的 splitChunks ，配置分离规则
+splitChunks 配置分离规则如下：
 
 ```javascript
 module.exports = {
@@ -151,14 +149,32 @@ module.exports = {
 
 ![image](../img/8.png)
 
-- 防止重复：使用 Entry dependencies 或者 SplitChunksPlugin 去重和分离 chunk。
-- 动态导入：通过模块的内联函数调用来分离代码。比如按需加载（利用 import() 语法）
+- **动态导入：通过模块的内联函数调用来分离代码**
+  示例：
+  我们不再使用 statically import(静态导入) lodash，而是通过 dynamic import(动态导入) 来分离出一个 chunk：
 
-**Unused Code Elimination / Unused Imported Code**
+```javascript
+async function getComponent() {
+  const element = document.createElement("div");
+  const { default: _ } = await import("lodash");
+  element.innerHTML = _.join(["Hello", "webpack"], " ");
 
-- 利用 webpack 的 [Tree Shaking](https://webpack.js.org/guides/tree-shaking) ，去除 unused code
+  return element;
+}
 
-> the new webpack 4 release expands on this capability with a way to provide hints to the compiler via the "sideEffects" package.json
+getComponent().then((component) => {
+  document.body.appendChild(component);
+});
+```
+
+在修改后，会分离出一个独立的 lodash 文件：
+![image](../img/11.png)
+
+#### 2.Unused Code Elimination & Unused Imported Code
+
+利用 webpack 的 [Tree Shaking](https://webpack.js.org/guides/tree-shaking) ，去除 unused code
+
+> the new webpack 4 release expands on this capability with a way to provide hints to the compiler via the "sideEffects" in package.json
 
 ```json
 {
@@ -171,26 +187,32 @@ module.exports = {
 
 ![image](../img/10.png)
 
-对比发现有些文件大小小了一些
+对比发现有些文件小了一些
 
 参考资料：
 
 [Remove unused JavaScript](https://web.dev/unused-javascript/)
 
-2. Minify JavaScript
-3. Eliminate render-blocking resources
+根据Lighthouse的报告，可以看出 moment.js 文件没有按需加载
 
-> Diagnostics(诊断) - More information about the performance of your application. These numbers don't directly affect the Performance score.
+![image](../img/12.png)
 
-1. Serve static assets with an efficient cache policy
-2. Avoid enormous network payloads
-3. Avoid an excessive DOM size
+去除 moment.js ，换成其他可以按需加载的时间库
+#### 2. Minify JavaScript
+webpack基本配置
+#### 3. Eliminate render-blocking resources
+![image](../img/13.png)
+
+**1).Serve static assets with an efficient cache policy**
+**2).Avoid enormous network payloads**
+**3).Avoid an excessive DOM size**
+
 
 **四、按照建议优化后性能评分**
 
 ![image](../img/6.png)
 
-### Performance
+## Performance
 
 以群侧边栏首页为例，尝试通过 Performance 来分析出哪些代码影响性能
 
@@ -218,4 +240,4 @@ Painting ：绘制时间
 Other ：其他时间
 Idle ：浏览器闲置时间
 
-### React Profiler
+## React Profiler
