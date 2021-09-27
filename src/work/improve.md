@@ -193,20 +193,50 @@ getComponent().then((component) => {
 
 [Remove unused JavaScript](https://web.dev/unused-javascript/)
 
-根据Lighthouse的报告，可以看出 moment.js 文件没有按需加载
+#### 3.具体项目中可优化的其他方案
 
 ![image](../img/12.png)
 
-去除 moment.js ，换成其他可以按需加载的时间库
+- 去除 moment.js ，换成其他可以按需加载的时间库
+- 在 `@mlamp/milo-ui` 中去除`moment`依赖 和 按需加载`@ant-design/icons`
+
+```javascript
+import { Button } from 'antd';
+
+// tree-shaking supported
+- import { Icon } from 'antd';
++ import { SmileOutlined } from '@ant-design/icons';
+
+  const Demo = () => (
+    <div>
+-     <Icon type="smile" />
++     <SmileOutlined />
+      <Button icon={<SmileOutlined />} />
+    </div>
+  );
+
+  // or directly import
+  import SmileOutlined from '@ant-design/icons/SmileOutlined';
+```
+
 #### 2. Minify JavaScript
-webpack基本配置
+
+webpack 插件，如 UglifyjsWebpackPlugin 等可以使用
+参见 [webpack 文档](https://webpack.docschina.org/plugins/uglifyjs-webpack-plugin/)，
+
 #### 3. Eliminate render-blocking resources
+
 ![image](../img/13.png)
 
+```javascript
+<script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js" defer></script>
+```
+在<script> 元素中
++ 设置 defer 属性（只适用于外部脚本文件）：告诉浏览器立即下载，但延迟执行
++ 设置 async 属性：不让页面等待脚本下载和执行，从而异步加载页面其他内容。
 **1).Serve static assets with an efficient cache policy**
 **2).Avoid enormous network payloads**
 **3).Avoid an excessive DOM size**
-
 
 **四、按照建议优化后性能评分**
 
