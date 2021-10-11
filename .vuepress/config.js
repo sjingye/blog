@@ -66,5 +66,9 @@ function getSidebar() {
       title: "项目中的问题",
       children: ["../src/work/home", "../src/work/improve"],
     },
+    {
+      title: "Java",
+      children: ["../src/java/basic.md"],
+    },
   ];
 }
