@@ -231,16 +231,46 @@ webpack 插件，如 UglifyjsWebpackPlugin 等可以使用
 ```javascript
 <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js" defer></script>
 ```
-在<script> 元素中
-+ 设置 defer 属性（只适用于外部脚本文件）：告诉浏览器立即下载，但延迟执行
-+ 设置 async 属性：不让页面等待脚本下载和执行，从而异步加载页面其他内容。
+
+在 script 元素中
+
+- 设置 defer 属性（只适用于外部脚本文件）：告诉浏览器立即下载，但延迟执行
+- 设置 async 属性：不让页面等待脚本下载和执行，从而异步加载页面其他内容。
+
 **1).Serve static assets with an efficient cache policy**
-**2).Avoid enormous network payloads**
-**3).Avoid an excessive DOM size**
+![image](../img/15.png)
+可以看出没有缓存
 
-**四、按照建议优化后性能评分**
+![image](../img/16.jpeg)
+从网上找的有缓存的情况
 
-![image](../img/6.png)
+解决办法：通过在 nginx 中设定缓存参数
+
+浏览器中的 cache 的三种属性
+
+1. Cache-Control:
+   no-cache: 代表档案不会被浏览器记住，每次 refresh 后都会重新与 server 要一次资料
+   max-age: 以秒为单位，当超过 cache 时间，refresh 后会重新与 server 要一次资料
+
+2. Expires
+   Expires: cache 过期失效的设定，在还没过期前，使用者怎么 refresh 都不会重新与 server 要一次资料。这的确会让 server 压力大大的下降，但大家或许会看出个问题，假设我设定了 365 天的 Expires，当 server 端的档案更新但使用者却要一年之后才会更新怎么办？这时第三个主角就要出现了，我们继续看下去！
+
+3. Last-Modified
+   当设定此参数之后，每次使用者 refresh 页面后，其实都会偷偷地向 server 下一个请求(非常非常小)，基本上就是确定档案有没有被更新过，如果没有就什么都不做，如果有就更新！
+
+```
+  location /static {
+    # 如果想要缓存所有 static 下的档案(css, js 档案都在其中)
+    alias /static;
+    # max-age 单位为秒数，在此设定 365 天
+    add_header Cache-Control "public, max-age=31536000";
+    # expires 10d 代表着 10 天就会过期，重新要资料。
+    expires 10d;
+  }
+```
+
+**2).Avoid an excessive DOM size**
+![image](../img/17.jpg)
 
 ## Performance
 
@@ -270,4 +300,6 @@ Painting ：绘制时间
 Other ：其他时间
 Idle ：浏览器闲置时间
 
+参考资料：
+[Chrome Performance 页面性能分析指南](https://segmentfault.com/a/1190000023272526)
 ## React Profiler
