@@ -1,4 +1,3 @@
-
 module.exports = {
   title: "blog",
   description: "个人博客",
@@ -52,7 +51,12 @@ function getSidebar() {
     },
     {
       title: "工具",
-      children: ["../src/tool/git", "../src/tool/npm", "../src/tool/vscode", "../src/tool/rules"],
+      children: [
+        "../src/tool/git",
+        "../src/tool/npm",
+        "../src/tool/vscode",
+        "../src/tool/rules",
+      ],
     },
     {
       title: "数据结构和算法",
@@ -64,7 +68,12 @@ function getSidebar() {
     },
     {
       title: "项目中的问题",
-      children: ["../src/work/home", "../src/work/improve"],
+      children: [
+        "../src/work/home",
+        "../src/work/Lighthouse",
+        "../src/work/Performance",
+        "../src/work/ReactProfiler",
+      ],
     },
     {
       title: "Java",
