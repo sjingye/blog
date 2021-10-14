@@ -76,7 +76,7 @@ Lighthouse 会对各个测试项的结果打分，并给出优化建议，这些
 
 1. 单击 chunk.js。
 2. 单击标题选项卡。
-3. 在响应标题部分搜索 content-encoding 标题。你不应该看到一个，这意味着它 bundle.js 没有被压缩。当资源被压缩，这头一般设置为 gzip，deflate 或 br。有关这些值的解释，请参阅指令。
+3. 在 response header 部分搜索 content-encoding 标题。没有找到，这意味着 bundle.js 没有被压缩。当资源被压缩，content-encoding 一般设置为 gzip，deflate 或 br。有关这些值的解释，请参阅指令。
 
 ![image](../img/24.png)
 
@@ -298,11 +298,43 @@ getComponent().then((component) => {
 
 #### 三、Eliminate render-blocking resources
 
+> A render-blocking resource is an external JavaScript or CSS file that the browser must download, parse, and execute before it can show the page. The goal is to only run the core CSS and JavaScript code that is required to display the page properly.
+
+The first task, then, is to find code that doesn't need to be executed on page load.
+
+阻塞的资源如下：
 ![image](../img/13.png)
+
+1. 按 Command+Shift+P (Mac) 或 Control+Shift+P（Windows、Linux、Chrome OS）打开命令菜单，开始输入 Coverage，然后选择 Show Coverage。
+
+2. 切换到 Coverage 面板
+
+3. 单击重新加载。从下图中能看出，前面几个文件 大部分的内容 没有被使用。
+   ![image](../img/27.png)
+
+4. 单击某一行。DevTools 在 Sources 面板中打开文件。如果一行代码旁边有一个绿色条，它就会被执行。红色条表示它没有被执行，并且在页面加载时绝对不需要。
+
+![image](../img/29.png)
+
+![image](../img/28.png)
+
+Coverage 选项卡可以帮助您逐行分析代码，并且只发送页面加载所需的代码。
+
+解决办法：
+可以通过在页面加载期间仅传送关键代码，然后延迟加载其他所有代码来加速页面加载。
+
+- 您不太可能找到可以完全删除的脚本，但您经常会发现许多脚本不需要在页面加载期间请求，而是可以异步请求。请参阅使用 async 或 defer。
+
+针对 jweixin，因为一进入页面，就需要调用企业微信的注册等功能，是否可以这样用呢？
 
 ```javascript
 <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js" defer></script>
 ```
+
+可以在 test 环境测试，为了不污染测试环境，以后再验证此 js 文件 defer 的影响，大家也可以思考一下
+
+- 如果您使用的是框架，请检查它是否具有生产模式。此模式可能会使用诸如 tree shaking 之类的功能，以消除阻塞关键渲染的不必要代码。修改后结果如图：
+  ![image](../img/30.png)
 
 在 script 元素中
 
@@ -368,7 +400,10 @@ import { Button } from 'antd';
 
 #### 二、Avoid enormous network payloads
 
+修改了 webpack 配置后，发现此问题也消失了
+![image](../img/31.png)
 #### 三、Avoid an excessive DOM size
+
 文件过大
 
 ![image](../img/17.jpg)
