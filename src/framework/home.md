@@ -13,3 +13,29 @@
 ## webpack
 
 webpack config 文件的相对位置 是参照于 项目目录的
+
+### common plugins
+
+- HtmlWebpackPlugin
+- MiniCssExtractPlugin
+
+本插件会将 CSS 提取到单独的文件中，为每个包含 CSS 的 JS 文件创建一个 CSS 文件，并且支持 CSS 和 SourceMaps 的按需加载。
+
+本插件基于 webpack v5 的新特性构建，并且需要 webpack 5 才能正常工作。
+
+## tslint
+
+```
+# Install the global CLI and its peer dependency
+yarn global add tslint typescript
+
+# Navigate to your sources folder
+cd path/to/project
+
+# Generate a basic configuration file
+tslint --init
+
+# Lint TypeScript source globs
+tslint -c tslint.json 'src/**/*.ts'
+tslint -c tslint.json 'src/**/*.tsx'
+```
