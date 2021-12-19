@@ -31,7 +31,7 @@ function getSidebar() {
     },
     {
       title: "JS",
-      children: ["../src/js/promise"],
+      children: ["../src/js/variables and types"],
     },
     {
       title: "框架通识",
