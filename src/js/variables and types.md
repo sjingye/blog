@@ -148,3 +148,5 @@ console.log(typeof s_obj); // Logs "object"
 
 ## 10.出现小数精度丢失的原因，JavaScript 可以存储的最大数字、最大安全数字，JavaScript 处理大数字的方法、避免精度丢失的方法
 [answer](https://github.com/camsong/blog/issues/9)
+[一日一技：为什么浮点数在计算机中可能不准确](https://blog.csdn.net/qq_39241986/article/details/104404249)
+[浮点数比较的精度问题](https://zhuanlan.zhihu.com/p/161971793)

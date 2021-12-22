@@ -28,3 +28,5 @@
 const a = SymbolPolyfill('a')
 console.dir(a.toString());
 
+console.log(Math.pow(2, 1024))
+
