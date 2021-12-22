@@ -1,32 +1,25 @@
 (function() {
-  function SymbolPolyfill(description) {
-
-    // 实现特性第 2 点：Symbol 函数前不能使用 new 命令
-    if (this instanceof SymbolPolyfill) {
-      throw new Error("SymbolPolyfill can not be a constructor");
+  function myInstanceof(l, r) {
+    while (l.__proto__ ) {
+      console.log(l.__proto__)
+      if (l.__proto__  === r.prototype) {
+        return true;
+      } else {
+        l = r.prototype;
+      }
     }
-
-    var symbol = Object.create({
-      toString() {
-        return `Symbol(${this._description})`;
-      },
-    });
-
-    Object.defineProperties(symbol, {
-      _description: {
-        value: description,
-        enumerable: false,
-        writeable: false,
-        configurable: false,
-      },
-    });
-
-    return symbol;
+    return false;
   }
-  this.SymbolPolyfill = SymbolPolyfill;
+
+  var o = {
+    a: 2,
+    m: function(){
+      return this.a + 1;
+    }
+  };
+  var p = Object.create(o);
+  p.a = 4; // 创建 p 的自身属性 'a'
+  console.log(p)
+
+  console.log(myInstanceof(p, o))
 })();
-const a = SymbolPolyfill('a')
-console.dir(a.toString());
-
-console.log(Math.pow(2, 1024))
-
