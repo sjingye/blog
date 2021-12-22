@@ -18,6 +18,9 @@
 
   [腾讯云 npm 文档](https://cloud.tencent.com/developer/section/1490280)
 
+install时：-S 相当于 --save ， -D 相当于 --save-dev
 ## 注意点
 
-- npm scripts 考虑到跨平台的兼容性
+- npm scripts 考虑到跨平台的兼容性, 可以引入cross-env
+
+
