@@ -31,11 +31,19 @@ function getSidebar() {
     },
     {
       title: "JS",
-      children: ["../src/js/variables and types"],
+      children: [
+        "../src/js/basic",
+        "../src/js/variables and types",
+        "../src/js/prototype",
+      ],
     },
     {
-      title: "框架通识",
-      children: ["../src/framework/home"],
+      title: "前端工程化",
+      children: [
+        "../src/framework/home",
+        "../src/framework/webpack",
+        "../src/framework/mobile",
+      ],
     },
     {
       title: "React",

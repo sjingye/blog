@@ -135,7 +135,7 @@ module.exports = {
 
 优点： 进行代码分割可以有效拒绝 js 文件过于庞大。
 
-### DllPlugin
+### DllPlugin（详见my-framework的实现）
 实现了拆分 bundles，同时还大幅度提升了构建的速度。"DLL" 一词代表微软最初引入的动态链接库
 
 ## webpack 打包优化
