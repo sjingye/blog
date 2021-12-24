@@ -1,4 +1,6 @@
-1. for of 用法
+# 基础语法
+
+**1.for of 用法**
 ```javascript
 const a = [1, 2, 3];
 for (let i in a) {

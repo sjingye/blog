@@ -2,18 +2,19 @@
 
 ## 备忘
 
-1. path.resolve
-   `path.resolve`：node 的官方 api，可以将路径或者路径片段解析成绝对路径。
-   `__dirname` ：其总是指向被执行 js 文件的绝对路径，比如在我们 webpack 文件中访问了 \_\_dirname ，那么它的值就是在电脑系统上的绝对路径，比如在我电脑上的 my framework 就是：
+在公共配置中，可能会出现某个配置的某个选项在开发环境和生产环境中采用不同的配置，这个时候我们有两种选择：
+
+- 分别在 dev 和 prod 配置文件中写一遍，common 中就不写了
+- 设置某个环境变量，根据这个环境变量来判别不同环境。
+
+### path.resolve
+
+`path.resolve`：node 的官方 api，可以将路径或者路径片段解析成绝对路径。
+`__dirname` ：其总是指向被执行 js 文件的绝对路径，比如在我们 webpack 文件中访问了 \_\_dirname ，那么它的值就是在电脑系统上的绝对路径，比如在我电脑上的 my framework 就是：
 
 /Users/mlamp/Documents/projects/my-framework/config
 
 path.resolve(\_\_dirname, ''../src/index.js)的作用是：把相对路径转换成了绝对路径
-
-2. 在公共配置中，可能会出现某个配置的某个选项在开发环境和生产环境中采用不同的配置，这个时候我们有两种选择：
-
-- 分别在 dev 和 prod 配置文件中写一遍，common 中就不写了
-- 设置某个环境变量，根据这个环境变量来判别不同环境。
 
 ### common plugins
 
@@ -86,7 +87,7 @@ package.json
 2. nodeEnv: 告知 webpack 将 process.env.NODE_ENV 设置为一个给定字符串
 3. splitChunks: 开箱即用。默认情况下，它只会影响到按需加载的 chunks
 
-webpack 将根据以下条件自动拆分 chunks：
+**webpack 将根据以下条件自动拆分 chunks：**
 
 1. 新的 chunk 可以被共享，或者模块来自于 node_modules 文件夹
 2. 新的 chunk 体积大于 20kb（在进行 min+gz 之前的体积）
@@ -135,7 +136,8 @@ module.exports = {
 
 优点： 进行代码分割可以有效拒绝 js 文件过于庞大。
 
-### DllPlugin（详见my-framework的实现）
+### DllPlugin（详见 my-framework 的实现）
+
 实现了拆分 bundles，同时还大幅度提升了构建的速度。"DLL" 一词代表微软最初引入的动态链接库
 
 ## webpack 打包优化
