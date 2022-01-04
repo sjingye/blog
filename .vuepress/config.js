@@ -68,11 +68,11 @@ function getSidebar() {
     },
     {
       title: "数据结构和算法",
-      children: ["../src/algorithm/home", "../src/algorithm/book1"],
+      children: ["../src/algorithm/home", "../src/algorithm/book1",],
     },
     {
       title: "计算机基础",
-      children: ["../src/basic/system.md"],
+      children: ["../src/basic/system.md", , "../src/algorithm/学习方法.md"],
     },
     {
       title: "项目中的问题",
